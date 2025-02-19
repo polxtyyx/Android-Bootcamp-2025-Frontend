@@ -1,5 +1,6 @@
 package ru.sicampus.bootcamp2025.ui.user_profile;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -7,112 +8,140 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
+import com.canhub.cropper.CropImageContractOptions;
+import com.canhub.cropper.CropImageOptions;
+import com.canhub.cropper.CropImageView;
 import com.squareup.picasso.Picasso;
 
-import java.util.Objects;
-
 import ru.sicampus.bootcamp2025.R;
+import ru.sicampus.bootcamp2025.data.UserRepositoryImpl;
 import ru.sicampus.bootcamp2025.databinding.UserProfileFragmentBinding;
-import ru.sicampus.bootcamp2025.ui.utils.MyNavigator;
+import ru.sicampus.bootcamp2025.domain.entities.FullUserEntity;
+import ru.sicampus.bootcamp2025.domain.sign.LogoutUseCase;
+import ru.sicampus.bootcamp2025.domain.user.UpdateUserProfileUseCase;
 
 public class UserProfileFragment extends Fragment {
 
-    private UserProfileFragmentBinding binding;
-    private UserProfileViewModel viewModel;
     private boolean isEdit = false;
 
-    public UserProfileFragment() {
-        super(R.layout.user_profile_fragment);
-    }
+    private final FullUserEntity user;
 
-    private static final String KEY_ID = "id";
+    private String url;
+
+    private UserProfileFragmentBinding binding;
+
+    private final UpdateUserProfileUseCase updateUserProfileUseCase = new UpdateUserProfileUseCase(
+            UserRepositoryImpl.getInstance()
+    );
+
+    private final LogoutUseCase logoutUseCase = new LogoutUseCase(
+            UserRepositoryImpl.getInstance()
+    );
+
+    public UserProfileFragment(FullUserEntity user) {
+        super(R.layout.user_profile_fragment);
+        this.user = user;
+        this.url = user.getPhotoUrl();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = UserProfileFragmentBinding.bind(view);
 
-        viewModel = new ViewModelProvider(this).get(UserProfileViewModel.class);
-
-        String userId = getArguments() != null ? getArguments().getString(KEY_ID) : null;
-        if (userId != null) {
-            viewModel.loadUser(userId);
+        if (user.getPhotoUrl() != null) {
+            Picasso.get().load(user.getPhotoUrl()).into(binding.image);
         }
+
+        binding.etNickname.setText(user.getNickname());
+        binding.etName.setText(user.getName());
+        binding.etEmail.setText(user.getEmail());
+
+        binding.etName.setFocusable(false);
+        binding.etName.setFocusableInTouchMode(false);
+        binding.etName.setClickable(false);
+
+        binding.etNickname.setFocusable(false);
+        binding.etNickname.setFocusableInTouchMode(false);
+        binding.etNickname.setClickable(false);
+
+        binding.etEmail.setFocusable(false);
+        binding.etEmail.setFocusableInTouchMode(false);
+        binding.etEmail.setClickable(false);
 
         binding.edit.setOnClickListener(v -> {
             if (!isEdit) {
-                enableEditing(true);
                 binding.edit.setImageDrawable(getResources().getDrawable(R.drawable.ok));
-                isEdit = true;
+
+                binding.etName.setFocusable(true);
+                binding.etName.setFocusableInTouchMode(true);
+                binding.etName.setClickable(true);
+
+                binding.etNickname.setFocusable(true);
+                binding.etNickname.setFocusableInTouchMode(true);
+                binding.etNickname.setClickable(true);
+
+                binding.etEmail.setFocusable(true);
+                binding.etEmail.setFocusableInTouchMode(true);
+                binding.etEmail.setClickable(true);
             } else {
-                String newName = Objects.requireNonNull(binding.name.getEditText().getText().toString());
-                String newNickname = Objects.requireNonNull(binding.nickname.getEditText().getText().toString());
-                String newEmail = Objects.requireNonNull(binding.email.getEditText().getText().toString());
-                String photoUrl = viewModel.stateLiveData.getValue() != null
-                        ? viewModel.stateLiveData.getValue().getUser().getPhotoUrl()
-                        : null;
+                String newName = binding.etName.getText().toString();
+                String newNickname = binding.etNickname.getText().toString();
+                String newEmail = binding.etEmail.getText().toString();
 
+                if (newEmail == null || newEmail.isEmpty())
+                    Toast.makeText(getActivity(), "Email cannot be null", Toast.LENGTH_SHORT).show();
+                else if (newName == null || newName.isEmpty())
+                    Toast.makeText(getActivity(), "Name cannot be null", Toast.LENGTH_SHORT).show();
+                else if (newNickname == null || newNickname.isEmpty())
+                    Toast.makeText(getActivity(), "Nickname cannot be null", Toast.LENGTH_SHORT).show();
+                else {
+                    updateUserProfileUseCase.execute(user.getId(),
+                            newName,
+                            newNickname,
+                            newEmail,
+                            user.getPhotoUrl(),
+                            status -> {
+                            });
+                    binding.etName.setFocusable(false);
+                    binding.etName.setFocusableInTouchMode(false);
+                    binding.etName.setClickable(false);
 
-                viewModel.updateUserProfile(userId, newName, newNickname, newEmail, photoUrl);
-                enableEditing(false);
-                binding.edit.setImageDrawable(getResources().getDrawable(R.drawable.ic_edit));
-                isEdit = false;
-            }
-        });
+                    binding.etNickname.setFocusable(false);
+                    binding.etNickname.setFocusableInTouchMode(false);
+                    binding.etNickname.setClickable(false);
 
-        subscribe();
-    }
+                    binding.etEmail.setFocusable(false);
+                    binding.etEmail.setFocusableInTouchMode(false);
+                    binding.etEmail.setClickable(false);
 
-    private void enableEditing(boolean enable) {
-        binding.name.setFocusable(enable);
-        binding.name.setFocusableInTouchMode(enable);
-        binding.name.setClickable(enable);
+                    binding.edit.setImageDrawable(getResources().getDrawable(R.drawable.ic_edit));
 
-        binding.nickname.setFocusable(enable);
-        binding.nickname.setFocusableInTouchMode(enable);
-        binding.nickname.setClickable(enable);
-
-        binding.email.setFocusable(enable);
-        binding.email.setFocusableInTouchMode(enable);
-        binding.email.setClickable(enable);
-    }
-
-    private void subscribe() {
-        viewModel.stateLiveData.observe(getViewLifecycleOwner(), state -> {
-            if (state.isLoading()) {
-                binding.loading.setVisibility(View.VISIBLE);
-            } else {
-                binding.loading.setVisibility(View.GONE);
-
-                if (state.getErrorMessage() != null) {
-                    Toast.makeText(requireContext(), state.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                } else if (state.getUser() != null) {
-                    Objects.requireNonNull(binding.name.getEditText().toString());
-                    Objects.requireNonNull(binding.nickname.getEditText().toString());
-                    Objects.requireNonNull(binding.email.getEditText().toString());
-                    if (state.getUser().getPhotoUrl() != null) {
-                        Picasso.get().load(state.getUser().getPhotoUrl()).into(binding.image);
-                    }
+                    isEdit = false;
                 }
             }
         });
 
-        viewModel.logoutLiveData.observe(getViewLifecycleOwner(), unused -> {
-            ((MyNavigator) requireActivity()).onLogout();
-        });
+    }
+
+    private void startCrop() {
+        CropImageOptions options = new CropImageOptions();
+        options.imageSourceIncludeCamera = false;
+        options.imageSourceIncludeGallery = true;
+        options.aspectRatioX = 1;
+        options.aspectRatioY = 1;
+        options.cropShape = CropImageView.CropShape.RECTANGLE;
+        options.fixAspectRatio = true;
+        options.showCropOverlay = true;
+        options.outputCompressFormat = Bitmap.CompressFormat.PNG;
+
+        CropImageContractOptions cropOptions = new CropImageContractOptions(null, options);
     }
 
     @Override
     public void onDestroyView() {
         binding = null;
         super.onDestroyView();
-    }
-
-    public static Bundle getBundle(@NonNull String id) {
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_ID, id);
-        return bundle;
     }
 }

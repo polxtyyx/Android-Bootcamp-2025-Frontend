@@ -36,18 +36,12 @@ public interface UserApi {
     @GET("/api/person/inactive")
     Call<List<UserDto>> getInactive();
 
-    @GET("/api/person/active")
-    Call<List<UserDto>> getActive();
-
     @GET("/api/person/{centerId}/volunteers")
     Call<List<UserDto>> getActiveUsersInCenter(@Path("centerId") String centerId);
 
-    @GET("/api/person")
-    Call<List<UserDto>> getAll();
+    @POST("/api/person/volunteers/{volunteer_id}/centers/{center_id}")
+    Call<Void> addUserToCenter(@Path("center_id") String centerId, @Path("user_id") String userId);
 
-    /* @PUT("/api/center/user/{centerId}/{userId}")
-    Call<Void> addUser(@Path("centerId") String centerId, @Path("userId") String userId);
-
-    @PUT("/api/center/user/delete/{centerId}/{userId}")
-    Call<Void> deleteUser(@Path("centerId") String centerId, @Path("userId") String userId); */
+    @DELETE("/api/person/volunteers/{volunteer_id}/centers")
+    Call<Void> deleteUserFromCenter(@Path("volunteer_id") String volunteerId);
 }

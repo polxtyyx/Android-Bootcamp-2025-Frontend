@@ -20,7 +20,7 @@ public class UserDto {
 
     @Nullable
     @SerializedName("mail")
-    public String email;
+    public String mail;
 
     @Nullable
     @SerializedName("photo_url")

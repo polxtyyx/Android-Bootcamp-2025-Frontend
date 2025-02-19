@@ -13,7 +13,7 @@ public class UserMapper {
     public static ItemUserEntity toItemUserEntity(@NonNull UserDto userDto) {
         final String id = userDto.id;
         final String name = userDto.name;
-        final String email = userDto.email;
+        final String email = userDto.mail;
 
         if (id != null && name != null && email != null) {
             return new ItemUserEntity(
@@ -34,7 +34,7 @@ public class UserMapper {
         final String id = userDto.id;
         final String name = userDto.name;
         final String nickname = userDto.nickname;
-        final String email = userDto.email;
+        final String email = userDto.mail;
 
         if (id != null && name != null && nickname != null && email != null) {
             return new FullUserEntity(

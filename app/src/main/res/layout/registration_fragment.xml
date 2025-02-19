@@ -58,6 +58,7 @@
             android:background="@drawable/edit_text_rounded_corners_background"
             android:hint="@string/name_hint"
             android:inputType="textPersonName"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@id/container"
             app:layout_constraintTop_toBottomOf="@id/tv_name_title" />
 
@@ -82,6 +83,7 @@
             android:background="@drawable/edit_text_rounded_corners_background"
             android:hint="@string/hint_create_nickname"
             android:inputType="textPersonName"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@id/container"
             app:layout_constraintTop_toBottomOf="@id/nickname_title" />
 
@@ -106,6 +108,7 @@
             android:background="@drawable/edit_text_rounded_corners_background"
             android:hint="@string/email_hint"
             android:inputType="textEmailAddress"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@id/container"
             app:layout_constraintTop_toBottomOf="@id/tv_input_email_title" />
 
@@ -130,6 +133,7 @@
             android:background="@drawable/edit_text_rounded_corners_background"
             android:hint="@string/password_hint"
             android:inputType="textPassword"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@id/container"
             app:layout_constraintTop_toBottomOf="@id/tv_input_password_title" />
 

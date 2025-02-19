@@ -38,7 +38,8 @@
         android:background="@drawable/rounded_corners_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/center_name">
+        app:layout_constraintTop_toBottomOf="@id/center_name"
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:id="@+id/title_address"
@@ -74,7 +75,9 @@
             android:textColor="@color/dark_gray"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@id/container"
-            app:layout_constraintTop_toBottomOf="@id/title_address" />
+            app:layout_constraintTop_toBottomOf="@id/title_address"
+            app:layout_constraintBottom_toBottomOf="@id/container"
+            android:layout_marginBottom="20dp"/>
 
         <TextView
             android:id="@+id/phone"
@@ -88,20 +91,6 @@
             app:layout_constraintEnd_toEndOf="@id/container"
             app:layout_constraintTop_toBottomOf="@id/address" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/show_on_map"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="25dp"
-            android:backgroundTint="@color/main_color"
-            android:text="@string/show_on_map"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@id/container"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/container"
-            app:layout_constraintTop_toBottomOf="@id/phone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -165,24 +154,13 @@
         android:id="@+id/join"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/main_color"
         android:text="@string/join"
         android:textColor="@color/white"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recycler_container" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:layout_constraintTop_toBottomOf="@id/recycler_container" />
 </androidx.constraintlayout.widget.ConstraintLayout>

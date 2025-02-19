@@ -63,22 +63,6 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
         ));
     }
 
-    @Override
-    public void getActiveUsers(@NonNull Consumer<Status<List<ItemUserEntity>>> callback) {
-        userApi.getActive().enqueue(new CallToConsumer<>(
-                callback,
-                users -> {
-                    ArrayList<ItemUserEntity> result = new ArrayList<>(users.size());
-                    for (UserDto user : users) {
-                        ItemUserEntity entity = UserMapper.toItemUserEntity(user);
-                        if (entity != null) {
-                            result.add(entity);
-                        }
-                    }
-                    return result;
-                }
-        ));
-    }
 
     @Override
     public void updateUser(
@@ -126,21 +110,21 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
     }
 
     @Override
-    public void getAll(@NonNull Consumer<Status<List<ItemUserEntity>>> callback) {
-        userApi.getAll().enqueue(new CallToConsumer<>(
+    public void detachUser(@NonNull String userId, Consumer<Status<Void>> callback) {
+        userApi.deleteUserFromCenter(userId).enqueue(new CallToConsumer<>(
                 callback,
-                userItems -> {
-                    ArrayList<ItemUserEntity> result = new ArrayList<>(userItems.size());
-                    for (UserDto user : userItems) {
-                        ItemUserEntity entity = UserMapper.toItemUserEntity(user);
-                        if (entity != null) {
-                            result.add(entity);
-                        }
-                    }
-                    return result;
-                }
+                dto -> null
         ));
     }
+
+    @Override
+    public void addUserToCenter(@NonNull String centerId, @NonNull String userId, Consumer<Status<Void>> callback) {
+        userApi.addUserToCenter(centerId, userId).enqueue(new CallToConsumer<>(
+                callback,
+                dto -> null
+        ));
+    }
+
 
     @Override
     public void isExistUser(@NonNull String login, Consumer<Status<Void>> callback) {

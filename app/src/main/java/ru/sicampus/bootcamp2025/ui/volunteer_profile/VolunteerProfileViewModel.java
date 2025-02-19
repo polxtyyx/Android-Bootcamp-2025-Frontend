@@ -31,7 +31,6 @@ public class VolunteerProfileViewModel extends ViewModel {
         });
     }
 
-
     public static class State {
         @Nullable
         private final String errorMessage;

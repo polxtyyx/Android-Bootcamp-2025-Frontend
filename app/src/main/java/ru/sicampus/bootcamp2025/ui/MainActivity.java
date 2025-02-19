@@ -16,6 +16,7 @@ import ru.sicampus.bootcamp2025.ui.utils.MyNavigator;
 public class MainActivity extends AppCompatActivity implements MyNavigator {
 
     private ActivityMainBinding binding;
+
     private NavController navController;
 
     @Override
@@ -27,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements MyNavigator {
 
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main);
-//        navController = Navigation.findNavController(this, R.id.main);
-        navController = navHostFragment.getNavController();
+        navController = Navigation.findNavController(this, R.id.main);
+        navController = NavHostFragment.findNavController(getSupportFragmentManager().getFragments().get(0));
 
 
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
@@ -40,15 +41,15 @@ public class MainActivity extends AppCompatActivity implements MyNavigator {
                 binding.bottomNavigationView.setVisibility(View.VISIBLE);
             }
         });
-//        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-//            if (item.getItemId() == R.id.centersList) {
-//                navController.navigate(R.id.centersList);
-//            }
-//            if (item.getItemId() == R.id.userProfileFragment) {
-//                navController.navigate(R.id.userProfileFragment);
-//            }
-//            return true;
-//        });
+       binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.centersList) {
+                navController.navigate(R.id.centersList);
+            }
+            if (item.getItemId() == R.id.userProfileFragment) {
+                navController.navigate(R.id.userProfileFragment);
+            }
+            return true;
+        });
 
     }
 

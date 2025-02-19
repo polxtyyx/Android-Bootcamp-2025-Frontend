@@ -16,8 +16,6 @@ public interface UserRepository {
 
     void getUser(@NonNull String id, @NonNull Consumer<Status<FullUserEntity>> callback);
 
-    void getActiveUsers(@NonNull Consumer<Status<List<ItemUserEntity>>> callback);
-
     void updateUser(
             @NonNull String id,
             @NonNull String name,
@@ -31,5 +29,9 @@ public interface UserRepository {
 
     void getActiveUsersInCenter(@NonNull String centerId, @NonNull Consumer<Status<List<ItemUserEntity>>> callback);
 
-    void getAll(@NonNull Consumer<Status<List<ItemUserEntity>>> callback);
+    void detachUser(@NonNull String userId, Consumer<Status<Void>> callback);
+
+    void addUserToCenter(@NonNull String centerId,
+                         @NonNull String userId,
+                         Consumer<Status<Void>> callback);
 }

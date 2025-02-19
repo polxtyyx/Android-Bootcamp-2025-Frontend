@@ -14,8 +14,4 @@ public interface CenterRepository {
     void getAllCenters(@NonNull Consumer<Status<List<ItemCenterEntity>>> callback);
 
     void getCenter(@NonNull String id, @NonNull Consumer<Status<FullCenterEntity>> callback);
-
-    //void addVolunteer(@NonNull String centerId, @NonNull String volunteerId, @NonNull Consumer<Status<FullUserEntity>> callback);
-
-    //void  deleteVolunteer(@NonNull String centerId, @NonNull String volunteerId, @NonNull Consumer<Status<FullUserEntity>> callback);
 }

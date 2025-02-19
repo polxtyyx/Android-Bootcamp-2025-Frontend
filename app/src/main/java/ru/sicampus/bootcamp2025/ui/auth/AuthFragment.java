@@ -22,7 +22,7 @@ public class AuthFragment extends Fragment {
     private AuthViewModel viewModel;
 
     public AuthFragment() {
-        super(R.layout.registration_fragment);
+        super(R.layout.authentication_fragment);
     }
 
     @Override

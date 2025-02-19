@@ -1,5 +1,7 @@
 package ru.sicampus.bootcamp2025.ui.registration;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -71,6 +73,17 @@ public class RegistrationViewModel extends ViewModel {
             mutableErrorLiveData.postValue("Nickname cannot be null");
             return;
         }
+
+        if (currentEmail == null || currentEmail.isEmpty()) {
+            mutableErrorLiveData.postValue("Email cannot be null");
+            return;
+        }
+
+        if (currentName == null || currentName.isEmpty()) {
+            mutableErrorLiveData.postValue("Name cannot be null");
+            return;
+        }
+
         if (currentPassword == null || currentPassword.isEmpty()) {
             mutableErrorLiveData.postValue("Password cannot be null");
             return;

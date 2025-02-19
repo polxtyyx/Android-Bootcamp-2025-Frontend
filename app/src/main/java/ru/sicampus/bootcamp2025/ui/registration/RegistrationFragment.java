@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.squareup.picasso.Picasso;
+
 import ru.sicampus.bootcamp2025.R;
 import ru.sicampus.bootcamp2025.databinding.RegistrationFragmentBinding;
 import ru.sicampus.bootcamp2025.ui.utils.OnChangeText;
